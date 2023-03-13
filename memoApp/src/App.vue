@@ -2,33 +2,31 @@
 import { ref } from "vue";
 
 let id = 0;
-const newMemo = ref("");
 const memos = ref([]);
+const edit = ref(false);
 
-const addMemo = () => {
-  memos.value.push({ id: id++, text: newMemo.value})
-}
 </script>
 
 <template>
   <div>
-    <h1>メモアプリ</h1>
+    <ul>
+      <li v-for="memo in memos" :key="memo.id">
+        <span>{{ memo.text }}</span>
+      </li>
+    </ul>
 
     <div>
-      <h2>メモを追加する</h2>
-      <form @submit.prevent="addMemo">
-        <input v-model="newMemo" />
-        <button>追加</button>
-      </form>
+      <button class="add-button">+</button>
     </div>
 
-    <div>
-      <h2 v-if="memos.length > 0">メモ一覧</h2>
-      <ul>
-        <li v-for="memo in memos" :key="memo.id">
-          <span>{{ memo.text }}</span>
-        </li>
-      </ul>
+    <div v-if="edit" class="edit-area">
+      <div class="edit-area-wrapper">
+        <textarea></textarea>
+        <div class="button-area">
+          <button>編集</button>
+          <button>削除</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -37,4 +35,25 @@ const addMemo = () => {
 h1 {
   font-size: 70px;
 }
+
+.add-button {
+  font-size: 20px;
+}
+
+.edit-area {
+  position: fixed;
+  right: 20px;
+  top: 100px;
+}
+
+.edit-area-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+textarea {
+  width: 500px;
+  height: 500px;
+}
+
 </style>
