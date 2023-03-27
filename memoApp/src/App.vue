@@ -1,9 +1,33 @@
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 let id = 0;
 const memos = ref([]);
-const edit = ref(false);
+const editId = ref(null);
+
+const textBeforeEditing = computed(() => {
+  const targetId = editId.value;
+  const targetMemo = memos.value.find((memo) => {return memo.id === targetId})
+  return targetMemo.text
+});
+
+let textBeingEdited = "";
+
+const getInput = (input) => {
+  textBeingEdited = input;
+}
+
+const addMemo = () => {
+  memos.value.push({ id: ++id, text:"新規メモ"});
+  editId.value = id;
+}
+
+const updateMemo = () => {
+  const targetId = editId.value;
+  let targetMemo = memos.value.find((memo) => {return memo.id === targetId});
+  targetMemo.text = textBeingEdited;
+  textBeingEdited = "";
+}
 
 </script>
 
@@ -16,16 +40,18 @@ const edit = ref(false);
     </ul>
 
     <div>
-      <button class="add-button">+</button>
+      <button class="add-button" @click="addMemo">+</button>
     </div>
 
-    <div v-if="edit" class="edit-area">
+    <div v-if="editId" class="edit-area">
       <div class="edit-area-wrapper">
-        <textarea></textarea>
-        <div class="button-area">
-          <button>編集</button>
-          <button>削除</button>
-        </div>
+        <form>
+          <textarea v-bind:value="textBeforeEditing" @input="getInput($event.target.value)"></textarea>
+          <div class="button-area">
+            <button @click.prevent="updateMemo">編集</button>
+            <button>削除</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
