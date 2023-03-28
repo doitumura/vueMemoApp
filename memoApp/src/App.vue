@@ -6,9 +6,7 @@ const memos = ref([]);
 const editId = ref(null);
 
 const textBeforeEditing = computed(() => {
-  const targetId = editId.value;
-  const targetMemo = memos.value.find((memo) => {return memo.id === targetId})
-  return targetMemo.text
+  return memos.value.find((memo) => memo.id === editId.value).text;
 });
 
 let textBeingEdited = "";
@@ -23,9 +21,7 @@ const addMemo = () => {
 }
 
 const updateMemo = () => {
-  const targetId = editId.value;
-  let targetMemo = memos.value.find((memo) => {return memo.id === targetId});
-  targetMemo.text = textBeingEdited;
+  memos.value.find((memo) => {return memo.id === editId.value}).text = textBeingEdited;
   textBeingEdited = "";
 }
 
