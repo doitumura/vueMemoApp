@@ -25,13 +25,17 @@ const updateMemo = () => {
   textBeingEdited = "";
 }
 
+const getFirstLine = (text) => {
+  return text.split(/\r\n|\n/)[0];
+}
+
 </script>
 
 <template>
   <div>
     <ul>
       <li v-for="memo in memos" :key="memo.id">
-        <span>{{ memo.text }}</span>
+        <span>{{ getFirstLine(memo.text) }}</span>
       </li>
     </ul>
 
