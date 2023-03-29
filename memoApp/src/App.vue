@@ -10,9 +10,11 @@ const textBeforeEditing = computed(() => {
 });
 
 let textBeingEdited = "";
+let edited = false;
 
 const getInput = (input) => {
   textBeingEdited = input;
+  edited = true;
 }
 
 const addMemo = () => {
@@ -21,8 +23,11 @@ const addMemo = () => {
 }
 
 const updateMemo = () => {
+  if(!edited) textBeingEdited = textBeforeEditing;
   memos.value.find((memo) => {return memo.id === editId.value}).text = textBeingEdited;
+
   textBeingEdited = "";
+  edited = false;
 }
 
 const getFirstLine = (text) => {
