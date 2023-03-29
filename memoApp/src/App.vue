@@ -2,7 +2,7 @@
 import { ref } from "vue";
 
 let id = 0;
-let editId = null;
+const editId = ref(null);
 const memos = ref([]);
 
 let textBeforeEditing = "";
@@ -17,16 +17,21 @@ const getInput = (input) => {
 const addMemo = () => {
   memos.value.push({ id: ++id, text:"新規メモ"});
   textBeforeEditing = "新規メモ";
-  editId = id;
+  editId.value = id;
+}
+
+const editMemo = (memo) => {
+  textBeforeEditing = memo.text;
+  editId.value = memo.id;
 }
 
 const updateMemo = () => {
   if(!edited) textBeingEdited = textBeforeEditing;
-  memos.value.find((memo) => {return memo.id === editId}).text = textBeingEdited;
+  memos.value.find((memo) => {return memo.id === editId.value}).text = textBeingEdited;
 
   textBeingEdited = "";
   edited = false;
-  editId = null;
+  editId.value = null;
 }
 
 const getFirstLine = (text) => {
@@ -39,7 +44,7 @@ const getFirstLine = (text) => {
   <div>
     <ul>
       <li v-for="memo in memos" :key="memo.id">
-        <span>{{ getFirstLine(memo.text) }}</span>
+        <span @click="editMemo(memo)">{{ getFirstLine(memo.text) }}</span>
       </li>
     </ul>
 
@@ -64,6 +69,10 @@ const getFirstLine = (text) => {
 <style scoped>
 h1 {
   font-size: 70px;
+}
+
+span {
+  cursor: pointer;
 }
 
 .add-button {
