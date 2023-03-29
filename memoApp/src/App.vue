@@ -1,14 +1,11 @@
 <script setup>
-import { computed, ref } from "vue";
+import { ref } from "vue";
 
 let id = 0;
+let editId = null;
 const memos = ref([]);
-const editId = ref(null);
 
-const textBeforeEditing = computed(() => {
-  return memos.value.find((memo) => memo.id === editId.value).text;
-});
-
+let textBeforeEditing = "";
 let textBeingEdited = "";
 let edited = false;
 
@@ -19,15 +16,17 @@ const getInput = (input) => {
 
 const addMemo = () => {
   memos.value.push({ id: ++id, text:"新規メモ"});
-  editId.value = id;
+  textBeforeEditing = "新規メモ";
+  editId = id;
 }
 
 const updateMemo = () => {
   if(!edited) textBeingEdited = textBeforeEditing;
-  memos.value.find((memo) => {return memo.id === editId.value}).text = textBeingEdited;
+  memos.value.find((memo) => {return memo.id === editId}).text = textBeingEdited;
 
   textBeingEdited = "";
   edited = false;
+  editId = null;
 }
 
 const getFirstLine = (text) => {
