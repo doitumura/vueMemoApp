@@ -1,10 +1,16 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
-let id = 0;
+let id = localStorage.getItem("id") || 1;
 const editId = ref(null);
 const editText = ref("")
-const memos = ref([]);
+const memos = ref(JSON.parse(localStorage.getItem("memos")) || []);
+
+watch(memos, (newMemos) => {
+  const memosJson = JSON.stringify(newMemos);
+  localStorage.setItem("memos", memosJson);
+  localStorage.setItem("id", id);
+}, {deep: true})
 
 const addMemo = () => {
   memos.value.push({ id: ++id, text:"新規メモ"});
