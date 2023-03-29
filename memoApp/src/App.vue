@@ -23,6 +23,11 @@ const updateMemo = () => {
   editId.value = null;
 }
 
+const deleteMemo = () => {
+  memos.value = memos.value.filter((memo) => {return memo.id !== editId.value})
+  editId.value = null;
+}
+
 const getFirstLine = (text) => {
   return text.split(/\r\n|\n/)[0];
 }
@@ -47,7 +52,7 @@ const getFirstLine = (text) => {
           <textarea v-model="editText"></textarea>
           <div class="button-area">
             <button @click.prevent="updateMemo">編集</button>
-            <button>削除</button>
+            <button @click.prevent="deleteMemo">削除</button>
           </div>
         </form>
       </div>
