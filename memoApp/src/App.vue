@@ -38,7 +38,7 @@ const getFirstLine = (text) => {
   <div>
     <ul>
       <li v-for="memo in memos" :key="memo.id">
-        <span @click="editMemo(memo)">{{ getFirstLine(memo.text) }}</span>
+        <span :class="[memo.id === editId ? 'clicked' : '']" @click="editMemo(memo)">{{ getFirstLine(memo.text) }}</span>
       </li>
     </ul>
 
@@ -67,6 +67,10 @@ h1 {
 
 span {
   cursor: pointer;
+}
+
+.clicked {
+  color:red;
 }
 
 .add-button {
