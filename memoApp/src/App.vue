@@ -3,34 +3,23 @@ import { ref } from "vue";
 
 let id = 0;
 const editId = ref(null);
+const editText = ref("")
 const memos = ref([]);
-
-let textBeforeEditing = "";
-let textBeingEdited = "";
-let edited = false;
-
-const getInput = (input) => {
-  textBeingEdited = input;
-  edited = true;
-}
 
 const addMemo = () => {
   memos.value.push({ id: ++id, text:"新規メモ"});
-  textBeforeEditing = "新規メモ";
+  editText.value = "新規メモ";
   editId.value = id;
 }
 
 const editMemo = (memo) => {
-  textBeforeEditing = memo.text;
+  editText.value = memo.text;
   editId.value = memo.id;
 }
 
 const updateMemo = () => {
-  if(!edited) textBeingEdited = textBeforeEditing;
-  memos.value.find((memo) => {return memo.id === editId.value}).text = textBeingEdited;
-
-  textBeingEdited = "";
-  edited = false;
+  memos.value.find((memo) => {return memo.id === editId.value}).text = editText.value;
+  editText.value = "";
   editId.value = null;
 }
 
@@ -55,7 +44,7 @@ const getFirstLine = (text) => {
     <div v-if="editId" class="edit-area">
       <div class="edit-area-wrapper">
         <form>
-          <textarea v-bind:value="textBeforeEditing" @input="getInput($event.target.value)"></textarea>
+          <textarea v-model="editText"></textarea>
           <div class="button-area">
             <button @click.prevent="updateMemo">編集</button>
             <button>削除</button>
