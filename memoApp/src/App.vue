@@ -3,48 +3,59 @@ import { ref, watch } from "vue";
 
 let id = localStorage.getItem("id") || 1;
 const editId = ref(null);
-const editText = ref("")
+const editText = ref("");
 const memos = ref(JSON.parse(localStorage.getItem("memos")) || []);
 
-watch(memos, (newMemos) => {
-  const memosJson = JSON.stringify(newMemos);
-  localStorage.setItem("memos", memosJson);
-  localStorage.setItem("id", id);
-}, {deep: true})
+watch(
+  memos,
+  (newMemos) => {
+    const memosJson = JSON.stringify(newMemos);
+    localStorage.setItem("memos", memosJson);
+    localStorage.setItem("id", id);
+  },
+  { deep: true }
+);
 
 const addMemo = () => {
-  memos.value.push({ id: ++id, text:"新規メモ"});
+  memos.value.push({ id: ++id, text: "新規メモ" });
   editText.value = "新規メモ";
   editId.value = id;
-}
+};
 
 const editMemo = (memo) => {
   editText.value = memo.text;
   editId.value = memo.id;
-}
+};
 
 const updateMemo = () => {
-  memos.value.find((memo) => {return memo.id === editId.value}).text = editText.value;
+  memos.value.find((memo) => {
+    return memo.id === editId.value;
+  }).text = editText.value;
   editText.value = "";
   editId.value = null;
-}
+};
 
 const deleteMemo = () => {
-  memos.value = memos.value.filter((memo) => {return memo.id !== editId.value})
+  memos.value = memos.value.filter((memo) => {
+    return memo.id !== editId.value;
+  });
   editId.value = null;
-}
+};
 
 const getFirstLine = (text) => {
   return text.split(/\r\n|\n/)[0];
-}
-
+};
 </script>
 
 <template>
   <div>
     <ul>
       <li v-for="memo in memos" :key="memo.id">
-        <span :class="[memo.id === editId ? 'clicked' : '']" @click="editMemo(memo)">{{ getFirstLine(memo.text) }}</span>
+        <span
+          :class="[memo.id === editId ? 'clicked' : '']"
+          @click="editMemo(memo)"
+          >{{ getFirstLine(memo.text) }}</span
+        >
       </li>
     </ul>
 
@@ -76,7 +87,7 @@ span {
 }
 
 .clicked {
-  color:red;
+  color: red;
 }
 
 .add-button {
@@ -98,5 +109,4 @@ textarea {
   width: 500px;
   height: 500px;
 }
-
 </style>
