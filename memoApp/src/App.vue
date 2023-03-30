@@ -85,8 +85,8 @@ span {
 
 .edit-area {
   position: fixed;
-  right: 20px;
-  top: 100px;
+  left: 600px;
+  top: 40px;
 }
 
 .edit-area-wrapper {
