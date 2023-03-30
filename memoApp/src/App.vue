@@ -50,12 +50,13 @@ const getFirstLine = (text) => {
 <template>
   <div>
     <ul>
-      <li v-for="memo in memos" :key="memo.id">
-        <span
-          :class="[memo.id === editId ? 'clicked' : '']"
-          @click="editMemo(memo)"
-          >{{ getFirstLine(memo.text) }}</span
-        >
+      <li
+        v-for="memo in memos"
+        :key="memo.id"
+        :class="[memo.id === editId ? 'clicked' : '']"
+        @click="editMemo(memo)"
+      >
+        <span>{{ getFirstLine(memo.text) }}</span>
       </li>
     </ul>
 
@@ -82,7 +83,7 @@ h1 {
   font-size: 70px;
 }
 
-span {
+li {
   cursor: pointer;
 }
 
