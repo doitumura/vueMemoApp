@@ -6,20 +6,12 @@ const editId = ref(null);
 const editText = ref("");
 const memos = ref(JSON.parse(localStorage.getItem("memos")) || []);
 
-watch(
-  memos,
-  (newMemos) => {
-    const memosJson = JSON.stringify(newMemos);
-    localStorage.setItem("memos", memosJson);
-    localStorage.setItem("id", id);
-  },
-  { deep: true }
-);
-
 const addMemo = () => {
   memos.value.push({ id: ++id, text: "新規メモ" });
   editText.value = "新規メモ";
   editId.value = id;
+
+  saveMemoToLocalStorage();
 };
 
 const editMemo = (memo) => {
@@ -33,6 +25,8 @@ const updateMemo = () => {
   }).text = editText.value;
   editText.value = "";
   editId.value = null;
+
+  saveMemoToLocalStorage();
 };
 
 const deleteMemo = () => {
@@ -40,6 +34,14 @@ const deleteMemo = () => {
     return memo.id !== editId.value;
   });
   editId.value = null;
+
+  saveMemoToLocalStorage();
+};
+
+const saveMemoToLocalStorage = () => {
+  const memosJson = JSON.stringify(memos.value);
+  localStorage.setItem("memos", memosJson);
+  localStorage.setItem("id", id);
 };
 
 const getFirstLine = (text) => {
